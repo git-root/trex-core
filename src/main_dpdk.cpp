@@ -772,7 +772,9 @@ static int parse_options(int argc, char *argv[], CParserOption* po, bool first_t
                 po->m_expected_portd =atoi(args.OptionArg());
                 break;
             case  OPT_CORES  :
-                po->preview.setCores(atoi(args.OptionArg()));
+                int a;
+                po->preview.setCores(a=atoi(args.OptionArg()));
+                printf("I am here %d!!\n",a);
                 break;
             case OPT_FLIP_CLIENT_SERVER :
                 po->preview.setClientServerFlip(true);
@@ -908,7 +910,7 @@ static int parse_options(int argc, char *argv[], CParserOption* po, bool first_t
         printf(" ERROR maximum  cores are : %d \n",((BP_MAX_CORES)/2-1));
         return -1;
     }
-
+printf("Crossed it!\n");
 
     if ( first_time ){
         /* only first time read the configuration file */
@@ -4376,7 +4378,7 @@ int update_global_info_from_platform_file(){
         /* nothing to do ! */
         return 0;
     }
-
+printf("Update_global_info: cg_>m_prefix %d\n",cg->m_thread_per_dual_if);
     CGlobalInfo::m_options.prefix =cg->m_prefix;
     CGlobalInfo::m_options.preview.setCores(cg->m_thread_per_dual_if);
 
@@ -4441,9 +4443,10 @@ int  update_dpdk_args(void){
         lpsock->dump(stdout);
     }
 
-
+    printf("HEX: 0x%llx INT %lld\n",(unsigned long long)lpsock->get_cores_mask(),
+      (unsigned long long)lpsock->get_cores_mask());
     sprintf(global_cores_str,"0x%llx",(unsigned long long)lpsock->get_cores_mask());
-
+printf("GLOBAL : %s\n",global_cores_str);
     /* set the DPDK options */
     global_dpdk_args_num =7;
 
@@ -4540,7 +4543,7 @@ int main_test(int argc , char * argv[]){
     if ( parse_options(argc, argv, &CGlobalInfo::m_options,true ) != 0){
         exit(-1);
     }
-
+printf("Crossed Platform Options!\n");
     update_global_info_from_platform_file();
 
     /* it is not a mistake , give the user higher priorty over the configuration file */
@@ -4570,8 +4573,11 @@ int main_test(int argc , char * argv[]){
         return (-1);
     }
 
+int jh=0;
+for(;jh<global_dpdk_args_num;jh++)
+    printf("%s ",global_dpdk_args[jh]);
 
-
+printf("\n");
     ret = rte_eal_init(global_dpdk_args_num, (char **)global_dpdk_args);
     if (ret < 0){
         printf(" You might need to run ./trex-cfg  once  \n");

@@ -795,6 +795,8 @@ public:
     }
 
     uint32_t get_number_of_dp_cores_needed() {
+        printf("PreviewCores:%d\n",preview.getCores());
+        printf("Get COres: %d\n",(m_expected_portd>>1)   * preview.getCores());
         return ( (m_expected_portd>>1)   * preview.getCores());
     }
     bool is_latency_disabled(){

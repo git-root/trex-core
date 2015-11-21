@@ -386,6 +386,7 @@ eal_parse_common_option(int opt, const char *optarg,
 	case 'c':
 		if (eal_parse_coremask(optarg) < 0) {
 			RTE_LOG(ERR, EAL, "invalid coremask\n");
+            printf("ERROR\n");
 			return -1;
 		}
 		break;
